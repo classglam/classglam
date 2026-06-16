@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>classglam — Webs que no parecen plantillas</title>
+  <meta name="description" content="Diseño y desarrollo web. Landing pages, webs para locales y herramientas digitales. HTML, CSS, JS puro.">
+  <meta property="og:title" content="classglam — Diseño & desarrollo web">
+  <meta property="og:description" content="Webs que convierten. Sin frameworks, sin complicaciones.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #080808;
+      --surface:     #101010;
+      --surface-2:   #161616;
+      --border:      rgba(255,255,255,0.07);
+      --border-2:    rgba(255,255,255,0.12);
+      --text:        #e8e3da;
+      --muted:       rgba(232,227,218,0.45);
+      --accent:      #c4a76b;
+      --accent-dim:  rgba(196,167,107,0.12);
+      --r:           6px;
+      --font:        'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      padding: 22px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,.85);
+      backdrop-filter: blur(16px);
+      border-color: var(--border);
+    }
+
+    .logo {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.03em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { font-style: normal; color: var(--accent); }
+
+    .nav-cta {
+      padding: 8px 22px;
+      border: 1px solid var(--border-2);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .nav-cta:hover { background: var(--surface-2); border-color: rgba(255,255,255,.22); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 48px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle grid */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 65% 35%, black 0%, transparent 65%);
+      mask-image: radial-gradient(ellipse 80% 70% at 65% 35%, black 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 65% 35%, rgba(196,167,107,.055) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(46px, 7.5vw, 100px);
+      font-weight: 600;
+      letter-spacing: -.045em;
+      line-height: 1.0;
+      max-width: 860px;
+      margin-bottom: 32px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+
+    .hero p {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(15px, 1.8vw, 19px);
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.75;
+      margin-bottom: 52px;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 30px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity .2s, transform .2s, background .2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #080808;
+    }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      padding: 0;
+      font-size: 14px;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .ticker {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 22s linear infinite;
+    }
+    .ticker-item {
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 40px;
+    }
+    .ticker-item strong { color: var(--accent); font-weight: 400; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 100px 48px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .label::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 46px);
+      font-weight: 600;
+      letter-spacing: -.035em;
+      line-height: 1.1;
+      margin-bottom: 64px;
+      max-width: 560px;
+    }
+
+    /* ── SERVICES ── */
+    #servicios { border-top: 1px solid var(--border); }
+
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid var(--border);
+    }
+
+    .card {
+      padding: 44px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: background .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 20% 80%, var(--accent-dim), transparent);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .card:hover { background: var(--surface-2); }
+    .card:hover::after { opacity: 1; }
+    .card:hover .card-num { color: var(--accent); }
+
+    .card-num {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 36px;
+      transition: color .3s;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 22px;
+      opacity: .7;
+    }
+
+    .card h3 {
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── PROCESS ── */
+    #proceso { border-top: 1px solid var(--border); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-top: 64px;
+    }
+
+    .step {
+      padding: 40px 36px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .step:last-child { border-right: none; }
+
+    .step-num {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -.05em;
+      color: rgba(255,255,255,.04);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .step h3 {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── STACK ── */
+    #stack { border-top: 1px solid var(--border); }
+
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 48px;
+    }
+
+    .pill {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: color .2s, border-color .2s;
+    }
+    .pill:hover {
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      padding: 120px 48px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 280px;
+      background: radial-gradient(ellipse at center top, rgba(196,167,107,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta h2 {
+      font-size: clamp(32px, 5vw, 68px);
+      font-weight: 600;
+      letter-spacing: -.04em;
+      line-height: 1.05;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .cta p {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .grid-2x2 { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .step { border-right: none; border-bottom: 1px solid var(--border); }
+      .step:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 600px) {
+      nav, .hero, .section, #proceso, #stack, .cta { padding-left: 24px; padding-right: 24px; }
+      footer { padding: 24px; flex-direction: column; text-align: center; }
+      .steps { grid-template-columns: 1fr; }
+      .card { padding: 32px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">class<em>glam</em></a>
+    <a href="#contacto" class="nav-cta">Hablemos</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-label">Diseño &amp; Desarrollo web</span>
+    <h1>Webs que no<br>parecen <em>plantillas.</em></h1>
+    <p>Landing pages, webs para locales y herramientas digitales. HTML, CSS, JS — sin frameworks, sin complicaciones.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn btn-primary">Empezamos →</a>
+      <a href="#servicios" class="btn btn-ghost">Ver servicios ↓</a>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker" aria-hidden="true">
+      <span class="ticker-item">Landing pages</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Webs para bares &amp; locales</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Herramientas digitales</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Contenido para redes</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">HTML · CSS · JS</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">GSAP · Three.js</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">Landing pages</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Webs para bares &amp; locales</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Herramientas digitales</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">Contenido para redes</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">HTML · CSS · JS</span>
+      <span class="ticker-item"><strong>·</strong></span>
+      <span class="ticker-item">GSAP · Three.js</span>
+      <span class="ticker-item"><strong>·</strong></span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="servicios">
+    <span class="label reveal">Servicios</span>
+    <h2 class="section-title reveal">Lo que construyo para ti</h2>
+    <div class="grid-2x2">
+
+      <div class="card reveal">
+        <div class="card-num">01</div>
+        <svg class="card-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="8" width="32" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="4" y1="14" x2="36" y2="14" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="9" y1="11" x2="9" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="13" y1="11" x2="13" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <rect x="8" y="19" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="22" y1="20" x2="32" y2="20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="22" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <h3>Landing pages de producto</h3>
+        <p>Newsletters, SaaS, marcas de nicho. Páginas optimizadas para convertir desde el primer scroll — sin plantillas, sin excusas.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-num">02</div>
+        <svg class="card-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6L34 14V26L20 34L6 26V14L20 6Z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M20 13L27 17V25L20 29L13 25V17L20 13Z" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="20" cy="21" r="2" fill="currentColor"/>
+        </svg>
+        <h3>Webs para locales</h3>
+        <p>Bares, coctelerías, experiencias nocturnas. Identidad propia, atmósfera digital que se siente antes de entrar por la puerta.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-num">03</div>
+        <svg class="card-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="10" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M14 20L17 23L23 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="26" y1="17" x2="30" y2="17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="26" y1="20" x2="30" y2="20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="26" y1="23" x2="28" y2="23" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <h3>Herramientas y apps</h3>
+        <p>Utilidades web, planners digitales, automatizaciones. Código que no necesita servidor — rápido, limpio, tuyo para siempre.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-num">04</div>
+        <svg class="card-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="8" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="22" y="8" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="6" y="24" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="22" y="24" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <h3>Contenido para redes</h3>
+        <p>Carruseles, visuales, vídeo. Diseño que funciona en el feed — no solo en el portfolio.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section" id="proceso">
+    <span class="label reveal">Proceso</span>
+    <h2 class="section-title reveal">Simple. Rápido.<br>Sin reuniones infinitas.</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>Briefing</h3>
+        <p>Me cuentas el proyecto, el público y lo que necesitas que haga la web. Sin formularios kilométricos.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h3>Propuesta</h3>
+        <p>Concepto visual y estructura en menos de 48h. Si no convence, ajustamos hasta que encaje.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h3>Desarrollo</h3>
+        <p>HTML, CSS, JS puro. Sin dependencias innecesarias — carga rápida, código limpio y sin lock-in.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <h3>Entrega</h3>
+        <p>Código listo para cualquier hosting. Sin suscripciones, sin servidores propios. Tuyo para siempre.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="section" id="stack">
+    <span class="label reveal">Stack</span>
+    <h2 class="section-title reveal">Tecnología que<br>no necesita servidor.</h2>
+    <div class="stack-row reveal">
+      <span class="pill">HTML5</span>
+      <span class="pill">CSS3</span>
+      <span class="pill">JavaScript</span>
+      <span class="pill">GSAP</span>
+      <span class="pill">Three.js</span>
+      <span class="pill">Canvas API</span>
+      <span class="pill">Web Animations</span>
+      <span class="pill">Figma</span>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contacto">
+    <h2 class="reveal">¿Tienes un proyecto?</h2>
+    <p class="reveal">Cuéntamelo. Respondo en menos de 24h.</p>
+    <a href="mailto:hola@classglam.dev" class="btn btn-primary reveal" style="font-size: 15px; padding: 16px 36px;">
+      hola@classglam.dev →
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="logo">class<em style="font-style:normal;color:var(--accent)">glam</em></a>
+    <div class="footer-links">
+      <a href="https://github.com/classglam">GitHub</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <span>© 2026 classglam</span>
+  </footer>
+
+  <script>
+    // Nav on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 48);
+    }, { passive: true });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          // stagger siblings within the same parent
+          const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+          const idx = siblings.indexOf(e.target);
+          setTimeout(() => e.target.classList.add('visible'), idx * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
